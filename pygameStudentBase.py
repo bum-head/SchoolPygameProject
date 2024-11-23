@@ -370,7 +370,31 @@ def DataEntry():
     pass
 
 def C_Data():
-    pass
+    while True:
+        click = False
+
+        screen.fill((60, 150, 60))
+        if w1 == True:
+            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+        if w2 == True:
+            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+
+
+        mx,my = pygame.mouse.get_pos()
+
+        draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-250)
+        a = draw_text("")
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                click = True
+            if event.type == pygame.KEYDOWN:
+                pass
+            if event.type == pygame.QUIT:
+                terminate()
+
+        pygame.display.flip()
+        clock.tick(FPS)    
 
 #FIND BRANCH
 
