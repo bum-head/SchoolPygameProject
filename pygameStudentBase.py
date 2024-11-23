@@ -264,7 +264,7 @@ def ChangeData_select_database():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mousecli = True
         for outvar in range(len(li)):
-            input_text = f"`{outvar}`" + li[outvar][0]
+            input_text = f"`{outvar+1}`" + li[outvar][0]
             q= draw_input_text(f"`{input_text}`", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+(outvar*30)) 
             if mousecli:
                 if q.collidepoint((mx,my)):
@@ -520,7 +520,8 @@ def FindData_select_opiom():
             screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
 
         mx,my = pygame.mouse.get_pos()
-     
+
+        draw_text("Show Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
         a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+150)
         b = draw_text("2. Show Specific Column", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+120)
         q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
@@ -558,6 +559,13 @@ def ShowTable():
 
         mx,my = pygame.mouse.get_pos()
      
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pass
+            if event.type == pygame.KEYDOWN:
+                pass
+            if event.type == pygame.QUIT:
+                terminate()
 
         pygame.display.flip()
         clock.tick(FPS)
