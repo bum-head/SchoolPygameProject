@@ -272,39 +272,11 @@ def ChangeData_select_database():
                     if click:                
                         selectedData = li[outvar][0]
                         
-                        ChangeData_mid_screen()
+                        ChangeData_select_table()
 
         pygame.display.flip()
         clock.tick(FPS)
 
-def ChangeData_mid_screen():
-
-    while True:
-        screen.fill((60,150,60))
-        if w1 == True:
-            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-        if w2 == True:
-            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-
-        a = draw_text("1.Change Table Values", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
-        c = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+150)
-
-        mx, my = pygame.mouse.get_pos()
-
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if a.collidepoint((mx,my)):
-                    ChangeData_select_table()
-                if c.collidepoint((mx,my)):
-                    main_menu_loop()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    terminate()
-            if event.type == pygame.QUIT:
-                terminate()
-
-        pygame.display.flip()
-        clock.tick(FPS)
 
 
 
@@ -345,7 +317,7 @@ def ChangeData_select_table():
                 if event.key == pygame.K_ESCAPE:
                     terminate()
         for j in range(len(li)):
-            input_text = f"`{j}`" + li[j][0]
+            input_text = f"{j+1}" + li[j][0]
             q= draw_input_text(f"`{input_text.strip()}`", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+(j*40))
             if Mousecli:
                 if q.collidepoint((mx,my)):
@@ -369,7 +341,7 @@ def ChangeData_Options():
         if w2 == True:
             screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
 
-        e = draw_text("<HEADER>", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-250)
+        e = draw_text("<HEADER>", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-150)
         d = draw_text("1. Data Entry", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50)
         s = draw_text("2. Change Data", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
         a = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
@@ -492,7 +464,7 @@ def FindData_select_databasetable():
                 if q.collidepoint((mx,my)):
                     main_menu_loop()
         for j in range(len(li)):
-            input_text = f"`{j}`" + li[j][0]
+            input_text = f"{j+1}" + li[j][0]
             z = draw_input_text(f"`{input_text}`", "white", screen,SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50+(j*30))
 
 
