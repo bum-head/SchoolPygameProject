@@ -219,6 +219,14 @@ def Options():
         clock.tick(FPS)  
 
 
+
+
+
+#CREATE BRANCH
+
+
+
+
 def NewData():
     while True:
         screen.fill((60,150,60))
@@ -358,6 +366,13 @@ def CreateTable():
 
         pygame.display.flip()
         clock.tick(FPS)
+
+
+
+#CHANGE BRANCH
+
+
+
 
 def ChangeData_select_database():
     global selectedData, outvar
@@ -520,6 +535,12 @@ def ChangeData_table():
         pygame.display.flip()
         clock.tick(FPS)
 
+
+
+#FIND BRANCH
+
+
+
 def FindData():
     global selectedData3
     cursor.execute("SHOW DATABASES")
@@ -562,13 +583,13 @@ def FindData():
                     main_menu_loop()
                 if z.collidepoint((mx,my)):
                     selectedData3 = li[j][0]
-                    FindData_select_database()
+                    FindData_select_databasetable()
 
         pygame.display.flip()
         clock.tick(FPS)
 
 
-def FindData_select_database():
+def FindData_select_databasetable():
     global selectedData3
     cursor.execute(f"USE `{selectedData3}`")
     cursor.execute("SHOW TABLES")
@@ -617,13 +638,52 @@ def FindData_select_database():
                     main_menu_loop()
                 if z.collidepoint((mx,my)):
                     selectedData3 = li[j][0]
-                    FindData_select_table()
+                    FindData_select_opiom()
 
         pygame.display.flip()
         clock.tick(FPS)
 
 
-def FindData_select_table():
+def FindData_select_opiom():
+    
+    while True:
+        click = False
+
+        
+        screen.fill((60, 150, 60))
+        if w1 == True:
+            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+        if w2 == True:
+            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+
+        mx,my = pygame.mouse.get_pos()
+     
+        a = draw_text("Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-150)
+        b = draw_text("Show Specific Column", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-120)
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                click = True
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    terminate()
+            if event.type == pygame.QUIT:
+                terminate()
+
+        
+        if click:
+            if a.collidepoint((mx,my)):
+                ShowTable()
+            if b.collidepoint((mx,my)):
+                ShowTableSpecific()
+
+
+        pygame.display.flip()
+        clock.tick(FPS)
+   
+
+def ShowTable():
     while True:
 
         screen.fill((60, 150, 60))
@@ -635,16 +695,13 @@ def FindData_select_table():
         mx,my = pygame.mouse.get_pos()
      
 
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    terminate()
-            if event.type == pygame.QUIT:
-                terminate()
         pygame.display.flip()
         clock.tick(FPS)
    
+
+
+def ShowTableSpecific():
+    pass
+
 if __name__ == "__main__":
     connector_loop()
