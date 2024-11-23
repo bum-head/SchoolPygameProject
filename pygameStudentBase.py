@@ -1,6 +1,6 @@
 import pygame, sys
 import mysql.connector as sql
-from tabulate import tabulate as tbl
+from prettytable import from_db_cursor as tbl
 
 
 pygame.init()
@@ -143,18 +143,16 @@ def dataManager():
 
         draw_text("Data Manager", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-60)
 
-        a = draw_text("1. Enter New Data","white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+30)
-        b = draw_text("2. Change Previous Data","white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+60)
-        c = draw_text("3. Find From Existing","white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+90)
+        
+        b = draw_text("1. Change  Data","white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+60)
+        c = draw_text("2. Search Data","white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+90)
 
         z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+180)
 
         mx, my = pygame.mouse.get_pos()
 
         for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if a.collidepoint((mx,my)):
-                    NewData()
+
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if b.collidepoint((mx,my)):
                     ChangeData_select_database()
@@ -220,152 +218,6 @@ def Options():
 
 
 
-
-
-#CREATE BRANCH
-
-
-
-
-def NewData():
-    while True:
-        screen.fill((60,150,60))
-        if w1 == True:
-            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-        if w2 == True:
-            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-
-        draw_text("Data Entry", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-40)
-
-        a = draw_text("1. Create Database", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
-        b = draw_text("2. Create Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+40)
-
-        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+160)
-
-        mx, my = pygame.mouse.get_pos()
-
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if a.collidepoint((mx,my)):
-                    CreateDatabase()   
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if b.collidepoint((mx,my)):
-                    CreateTable() 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if z.collidepoint((mx, my)):
-                    main_menu_loop()                 
-            if event.type == pygame.QUIT:
-                terminate()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    terminate()
-
-        pygame.display.flip()
-        clock.tick(FPS)  
-
-def CreateDatabase():
-    active = False
-    input_text = "   "
-    while True:
-
-        screen.fill((60,150,60))
-        if w1 == True:
-            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-        if w2 == True:
-            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-
-        draw_text("Create Database", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-80)
-        a = draw_input_text(input_text, "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
-        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+80)
-
-        mx, my = pygame.mouse.get_pos()
-
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if a.collidepoint((mx,my)):
-                    active = not active
-
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if z.collidepoint((mx,my)):
-                    main_menu_loop()  
-            
-            if event.type == pygame.QUIT:
-                terminate()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    terminate()
-                if active:
-                    if event.key == pygame.K_BACKSPACE:
-                        input_text = input_text[:-1]
-                    elif event.unicode:
-                        input_text += event.unicode
-
-                    if event.key == pygame.K_RETURN:
-                        try:
-                            cursor.execute(f"CREATE DATABASE `{input_text.strip()}`")
-                            draw_text("Database Succesfully Created!", "White", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100)
-                            pygame.display.flip()
-                            pygame.time.delay(2000)
-                            main_menu_loop()
-                        except sql.Error:
-                            draw_text("Error", "white", screen , SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100)
-                            pygame.display.flip()
-                            pygame.time.delay(2000)
-                            main_menu_loop()
-
-        pygame.display.flip()
-        clock.tick(FPS)        
-
-def CreateTable():
-    input_text = "   "
-    active = False
-    while True:
-
-        screen.fill((60,150,60))
-        if w1 == True:
-            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-        if w2 == True:
-            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-
-
-        draw_text("Create Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100)
-        z = draw_text("# Main Menu", "white",screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+150)
-        a = draw_input_text(input_text, "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
-
-        mx, my = pygame.mouse.get_pos()
-
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if a.collidepoint((mx, my)):
-                    active = not active
-                if z.collidepoint((mx, my)):
-                    main_menu_loop()            
-            if event.type == pygame.QUIT:
-                terminate()
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    terminate()
-                if active:
-                    if event.key == pygame.K_BACKSPACE:
-                        input_text = input_text[:-1]
-                    elif event.unicode:
-                        input_text += event.unicode
-                
-                if event.key == pygame.K_RETURN:
-                    try:
-                        cursor.execute(f"create table `{input_text.strip()}` ")
-                        draw_text("Operation Succesful!", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+100)
-                        pygame.display.flip()
-                        pygame.time.delay(2000)
-                        main_menu_loop()
-                    except sql.Error:
-                        draw_text("Please Check your Input!!", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+100)
-                        pygame.display.flip()
-                        pygame.time.delay(2000)
-                        main_menu_loop()
-
-        pygame.display.flip()
-        clock.tick(FPS)
 
 
 
@@ -500,11 +352,11 @@ def ChangeData_select_table():
                     click = True
                     if click:
                         selectedData2 = li[j][0]
-                        ChangeData_table()
+                        ChangeData_Options()
         pygame.display.flip()
         clock.tick(FPS)
 
-def ChangeData_table():
+def ChangeData_Options():
     while True:
 
 
@@ -517,6 +369,9 @@ def ChangeData_table():
         if w2 == True:
             screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
 
+        e = draw_text("<HEADER>", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-250)
+        d = draw_text("1. Data Entry", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50)
+        s = draw_text("2. Change Data", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
         a = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
 
         for event in pygame.event.get():
@@ -529,13 +384,21 @@ def ChangeData_table():
                 click = True
 
         if click:
+            if d.collidepoint((mx,my)):
+                DataEntry()
+            if s.collidepoint((mx,my)):
+                C_Data()
             if a.collidepoint((mx, my)):
                 main_menu_loop()
 
         pygame.display.flip()
         clock.tick(FPS)
 
+def DataEntry():
+    pass
 
+def C_Data():
+    pass
 
 #FIND BRANCH
 
@@ -658,9 +521,9 @@ def FindData_select_opiom():
 
         mx,my = pygame.mouse.get_pos()
      
-        a = draw_text("Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-150)
-        b = draw_text("Show Specific Column", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-120)
-
+        a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+150)
+        b = draw_text("2. Show Specific Column", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+120)
+        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -677,7 +540,8 @@ def FindData_select_opiom():
                 ShowTable()
             if b.collidepoint((mx,my)):
                 ShowTableSpecific()
-
+            if q.collidepoint((mx,my)):
+                main_menu_loop()
 
         pygame.display.flip()
         clock.tick(FPS)
