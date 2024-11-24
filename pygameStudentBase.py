@@ -5,10 +5,13 @@ from prettytable import from_db_cursor as tbl
 
 pygame.init()
 
-SCREEN_WIDTH = 1366
-SCREEN_HEIGHT = 768
+SCREEN_WIDTH = 1128
+SCREEN_HEIGHT = 634
 FPS = 60
-FONT = pygame.font.Font("assets\\DeterminationMonoWebRegular-Z5oq.ttf" , 20)
+FONT = pygame.font.Font("assets\\terminal-grotesque.ttf" , 20)
+
+reso_modes = pygame.display.list_modes()
+SCREEN_WIDTH, SCREEN_HEIGHT = reso_modes[4]
 
 
 screen_caption = pygame.display.set_caption("Data Manager")
@@ -19,6 +22,10 @@ w2img = pygame.image.load("assets\\w2.png").convert()
 
 w1 = False
 w2 = False
+
+
+
+
 
 def terminate():
     pygame.quit()
@@ -264,7 +271,7 @@ def ChangeData_select_database():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mousecli = True
         for outvar in range(len(li)):
-            input_text = f"`{outvar+1}`" + li[outvar][0]
+            input_text = f"{outvar+1}" + " " + li[outvar][0]
             q= draw_input_text(f"`{input_text}`", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+(outvar*30)) 
             if mousecli:
                 if q.collidepoint((mx,my)):
@@ -317,8 +324,8 @@ def ChangeData_select_table():
                 if event.key == pygame.K_ESCAPE:
                     terminate()
         for j in range(len(li)):
-            input_text = f"{j+1}" + li[j][0]
-            q= draw_input_text(f"`{input_text.strip()}`", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+(j*40))
+            input_text = f"{j+1}" + " " + li[j][0]
+            q= draw_input_text(f"`{input_text}`", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+(j*40))
             if Mousecli:
                 if q.collidepoint((mx,my)):
                     click = True
@@ -433,7 +440,7 @@ def FindData():
                 click = True
 
         for j in range(len(li)):
-            input_text = f"`{j}`" + li[j][0]
+            input_text = f"{j+1}" + " " + li[j][0]
             z = draw_input_text(f"`{input_text}`", "white", screen,SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50+(j*30))
 
 
@@ -488,7 +495,7 @@ def FindData_select_databasetable():
                 if q.collidepoint((mx,my)):
                     main_menu_loop()
         for j in range(len(li)):
-            input_text = f"{j+1}" + li[j][0]
+            input_text = f"{j+1}" + " " + li[j][0]
             z = draw_input_text(f"`{input_text}`", "white", screen,SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50+(j*30))
 
 
