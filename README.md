@@ -1,3 +1,2 @@
-Just learning Github and how to share code?
+#School Project On MySQL Database Handler built in python
 
-Python pRoject esstential elements are uploaded here.
