@@ -257,7 +257,7 @@ def ChangeData_select_database():
             screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
 
         a= draw_text("Select Database", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
-        #b = draw_text("")
+      
         z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
         mousecli = False
         click = False
@@ -378,8 +378,65 @@ def ChangeData_Options():
         pygame.display.flip()
         clock.tick(FPS)
 
+
+
 def DataEntry():
-    pass
+    active = False
+
+    cursor.execute(f"DESCRIBE `{selectedData2}`")
+    data = cursor.fetchall()
+    
+    li = []
+    for i in range(len(data)):
+        li.append(data[i][0])
+    li_num = len(li)
+
+    ex_li = ["  "]*li_num
+
+    while True:
+        click = False
+
+        screen.fill((60, 150, 60))
+        if w1 == True:
+            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+        if w2 == True:
+            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+
+
+        mx,my = pygame.mouse.get_pos()
+
+        m =draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
+        a = draw_text("Enter Values", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
+ 
+        for k in range(li_num):
+            q = draw_input_text(ex_li[k], "white", screen, SCREEN_WIDTH/2-20+(k*20), SCREEN_HEIGHT/3)
+            if q.collidepoint((mx,my)):
+                active = not active
+                n = k
+
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                click = True
+
+                if m.collidepoint((mx,my)):
+                    main_menu_loop()
+            if event.type == pygame.QUIT:
+                terminate()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    terminate()
+                if active:
+                    if event.key == pygame.K_BACKSPACE:
+                        p =  ex_li[n]
+                        ex_li[n] = p[:-1]
+                    elif event.unicode:  
+                        ex_li[n] += event.unicode
+
+
+        pygame.display.flip()
+        clock.tick(FPS)    
+
+   
 
 def C_Data():
     while True:
