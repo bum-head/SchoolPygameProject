@@ -49,6 +49,19 @@ def draw_input_text(text, color, surface, x, y,font = FONT  ):
     surface.blit(textObj, textRect)
     return textRect
 
+def validate_headers(headers, data):
+
+    if not data:
+        return headers  # If no data, headers are fine as-is.
+
+    # Determine the number of columns in the data
+    num_columns = len(data[0])
+
+    # If headers are missing, add placeholder headers
+    while len(headers) < num_columns:
+        headers.append(f"Field of inquiry ({len(headers) + 1})")
+
+    return headers
 
 
 def fetch_table_data(table_name):
@@ -72,7 +85,7 @@ def calculate_column_widths(data, headers):
 
 def render_table(data, headers):
    
-    screen.fill((60, 150, 60))  
+    screen.fill("darkblue")  
 
     # Calculate column widths
     col_widths = calculate_column_widths(data, headers)
@@ -162,7 +175,7 @@ def connector_loop():
 def main_menu_loop():
     while True:
         
-        screen.fill((10,10,10))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -197,7 +210,7 @@ def main_menu_loop():
 
 def dataManager():
     while True:
-        screen.fill((60,150,60))
+        screen.fill("darkblue")
 
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
@@ -238,7 +251,7 @@ def dataManager():
 def Options():
     global w1, w2
     while True:
-        screen.fill((0,0,0))
+        screen.fill("darkblue")
 
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
@@ -301,7 +314,7 @@ def ChangeData_select_database():
 
     while True:
         
-        screen.fill((60,150,60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -355,7 +368,7 @@ def ChangeData_select_table():
     selectedData2 = None
 
     while True:
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -398,13 +411,13 @@ def ChangeData_Options():
         mx, my = pygame.mouse.get_pos()
         click = False
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
             screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
 
-        e = draw_text("<HEADER>", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
+        e = draw_text("Data Modification", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
         d = draw_text("1. Data Entry", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50)
         s = draw_text("2. Change Data", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
         a = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
@@ -444,7 +457,7 @@ def DataEntry():
     while True:
         click = False
 
-        screen.fill((60, 150, 60))  
+        screen.fill("darkblue")  
 
      
         if w1:
@@ -554,7 +567,7 @@ def C_Data():
     while True:
         
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -668,7 +681,7 @@ def FindData():
     while True:
         click = False
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -720,7 +733,7 @@ def FindData_select_databasetable():
 
         click = False
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -767,7 +780,7 @@ def FindData_select_opiom():
         click = False
 
         
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -776,8 +789,8 @@ def FindData_select_opiom():
         mx,my = pygame.mouse.get_pos()
 
         draw_text("Show Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
-        a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+150)
-        b = draw_text("2. Show Specific ", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+120)
+        a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+50 )
+        b = draw_text("2. Show Specific ", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+100)
         q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
 
         for event in pygame.event.get():
@@ -809,7 +822,7 @@ def ShowTable():
 
     while True:
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -839,7 +852,128 @@ def ShowTable():
 
 
 def ShowTableSpecific():
-    pass
+
+    entr = False
+
+    aclick = False
+    bclick = False
+    cclick = False
+
+    input_text = "  "   
+    where_text = "  "
+    order_text = "  "
+
+    input_text_const = "  "   
+    where_text_const = "  "
+    order_text_const = "  "
+
+    cursor.execute(f"DESCRIBE `{selectedData3}`")
+    data = cursor.fetchall()
+    
+    li = [row[0] for row in data] 
+    li_num = len(li)  
+
+    headers = []
+
+    while True:
+
+        screen.fill("darkblue")
+        if w1 == True:
+            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+        if w2 == True:
+            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+
+        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-20)
+
+        mx,my = pygame.mouse.get_pos()
+     
+        a = draw_input_text(f"{input_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/4, SCREEN_HEIGHT/3)
+        b = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
+        c = draw_input_text(f"{order_text}", "white", screen, SCREEN_WIDTH/2+3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3+40)
+
+        e = draw_text("ENTER", "white", screen, SCREEN_WIDTH/2 , SCREEN_HEIGHT-60)
+
+
+        for i in range(li_num):
+            draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3+i*(20))
+
+        if entr:
+            try:
+                headers = input_text.split(",")  
+                if input_text  == input_text_const and where_text == where_text_const and order_text == order_text_const:
+                    headers = [row[0] for row in data]
+                    cursor.execute(f"SELECT * FROM {selectedData3} ")
+                    
+                elif input_text == input_text_const and where_text == where_text_const and order_text != order_text_const: 
+                    cursor.execute(f"SELECT * FROM {selectedData3} ORDER BY {order_text.strip()}")
+                elif input_text == input_text_const and order_text == order_text_const and where_text != where_text_const:
+                    cursor.execute(f"SELECT * FROM {selectedData3} WHERE {where_text.strip()}") 
+
+                elif input_text != input_text_const and  order_text == order_text_const and where_text == where_text_const:      
+                    cursor.execute(f"SELECT {input_text} FROM {selectedData3} ")
+
+                elif input_text != input_text_const and  order_text != order_text_const and where_text == where_text_const:      
+                    cursor.execute(f"SELECT {input_text} FROM `{selectedData3}` ORDER BY {order_text.strip()}")
+                elif input_text != input_text_const and  where_text != where_text_const and order_text == order_text_const:      
+                    cursor.execute(f"SELECT {input_text} FROM `{selectedData3}` WHERE {where_text.strip()}") 
+
+                data1 = cursor.fetchall()
+                headers = validate_headers([headers[i].strip() for i in range(len(headers))], data1)
+                render_table(data1, headers)
+                
+            except sql.Error:
+                print(sql.Error)
+                terminate()
+
+
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    terminate()
+                if aclick:
+                    if event.key == pygame.K_BACKSPACE:
+                        input_text = input_text[:-1]
+                    elif event.unicode:  
+                        input_text += event.unicode
+                    
+                if bclick:
+                    if event.key == pygame.K_BACKSPACE:
+                        where_text = where_text[:-1]
+                    elif event.unicode:  
+                        where_text += event.unicode
+               
+                if cclick:
+                    if event.key == pygame.K_BACKSPACE:
+                        order_text = order_text[:-1]
+                    elif event.unicode:  
+                        order_text += event.unicode
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if m.collidepoint((mx,my)):
+                    main_menu_loop()
+                if a.collidepoint((mx,my)):
+                    aclick = True
+                    bclick = False
+                    cclick = False
+                if b.collidepoint((mx,my)):
+                    aclick = False
+                    bclick = True 
+                    cclick = False
+                if c.collidepoint((mx,my)):
+                    cclick = True
+                    bclick = False
+                    aclick = False  
+                if e.collidepoint((mx,my)):
+                    entr = True
+
+            if event.type == pygame.QUIT:
+                terminate()
+
+
+        
+        pygame.display.flip()
+        clock.tick(FPS)
+     
 
 if __name__ == "__main__":
     connector_loop()
