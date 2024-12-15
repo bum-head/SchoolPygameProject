@@ -8,8 +8,8 @@ pygame.init()
 SCREEN_WIDTH = 1128
 SCREEN_HEIGHT = 634
 FPS = 60
-FONT = pygame.font.Font("assets\\terminal-grotesque.ttf" , 20)
-FONTHEADER = pygame.font.Font("assets\\terminal-grotesque.ttf" , 25)
+FONT = pygame.font.Font("assets\\courbd.ttf" , 20)
+FONTHEADER = pygame.font.Font("assets\\courbd.ttf" , 25)
 reso_modes = pygame.display.list_modes()
 SCREEN_WIDTH, SCREEN_HEIGHT = reso_modes[2]
 
@@ -49,6 +49,57 @@ def draw_input_text(text, color, surface, x, y,font = FONT  ):
     surface.blit(textObj, textRect)
     return textRect
 
+
+
+def fetch_table_data(table_name):
+      
+    query = f"SELECT * FROM {table_name} "
+    cursor.execute(query)
+    return cursor.fetchall()
+
+def get_table_headers(table_name):
+    
+    cursor.execute(f"DESCRIBE {table_name}")
+    return [desc[0] for desc in cursor.fetchall()]
+
+def calculate_column_widths(data, headers):
+   
+    col_widths = [len(header) for header in headers]
+    for row in data:
+        for i, value in enumerate(row):
+            col_widths[i] = max(col_widths[i], len(str(value)))
+    return [width * 12 for width in col_widths]  # Scale width for rendering
+
+def render_table(data, headers):
+   
+    screen.fill((60, 150, 60))  
+
+    # Calculate column widths
+    col_widths = calculate_column_widths(data, headers)
+    total_table_width = sum(col_widths) + 20 * (len(headers) - 1)  # Total width of the table
+    total_table_height = 50 + len(data) * 30  # Height of headers + rows
+
+ 
+    x_offset = (SCREEN_WIDTH - total_table_width) // 2
+    y_offset = (SCREEN_HEIGHT - total_table_height) // 2
+
+
+    # Render table headers
+    header_y = y_offset
+    for i, header in enumerate(headers):
+        header_surface = FONT.render(header, True, (255, 255, 255), "black")
+        screen.blit(header_surface, (x_offset, header_y))
+        x_offset += col_widths[i] + 20  # Add padding between columns
+
+    # Render table rows
+    row_y = header_y + 40  
+    for row in data:
+        x_offset = (SCREEN_WIDTH - total_table_width) // 2
+        for i, value in enumerate(row):
+            row_surface = FONT.render(str(value), True, (255, 255, 255), "black")
+            screen.blit(row_surface, (x_offset, row_y))
+            x_offset += col_widths[i] + 20
+        row_y += 30  # Space between rows
 
 
 def connector_loop():
@@ -378,54 +429,93 @@ def ChangeData_Options():
         pygame.display.flip()
         clock.tick(FPS)
 
-
-
 def DataEntry():
+    
     active = False
 
     cursor.execute(f"DESCRIBE `{selectedData2}`")
     data = cursor.fetchall()
     
-    li = []
-    for i in range(len(data)):
-        li.append(data[i][0])
-    li_num = len(li)
+    li = [row[0] for row in data] 
+    li_num = len(li)  
 
-    ex_li = ["  "]*li_num
+    ex_li = ["  "] * li_num  
 
     while True:
         click = False
 
-        screen.fill((60, 150, 60))
-        if w1 == True:
-            screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
-        if w2 == True:
-            screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
+        screen.fill((60, 150, 60))  
 
+     
+        if w1:
+            screen.blit(pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
+        if w2:
+            screen.blit(pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT)), (0, 0))
 
-        mx,my = pygame.mouse.get_pos()
+        mx, my = pygame.mouse.get_pos()  
 
-        m =draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
-        a = draw_text("Enter Values", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
- 
+        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 250)
+        a = draw_text("Enter Values", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 100, FONTHEADER)
+        g = draw_text("Enter", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+200)
+
+        # Dynamically calculate the width of each input box and the gap between them
+        box_width = SCREEN_WIDTH // (li_num + 1.5) - 40  
+        gap = 20 
+        total_width = (box_width * li_num) + (gap * (li_num - 1))  
+        start_x = (SCREEN_WIDTH - total_width) // 2  
+
+        
         for k in range(li_num):
-            q = draw_input_text(ex_li[k], "white", screen, SCREEN_WIDTH/2-20+(k*20), SCREEN_HEIGHT/3)
-            if q.collidepoint((mx,my)):
+            x_position = start_x + k * (box_width + gap)  
+            draw_text(li[k], "white", screen, x_position, SCREEN_HEIGHT/3-40)
+            q = draw_input_text(ex_li[k], "white", screen, x_position, SCREEN_HEIGHT / 3)
+            if q.collidepoint((mx, my)): 
                 active = not active
                 n = k
 
+       
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = True
-
-                if m.collidepoint((mx,my)):
+                if m.collidepoint((mx, my)):
                     main_menu_loop()
+                    
+                    
+                if g.collidepoint((mx,my)):
+                    try:
+
+                        for o in range(li_num):
+                            if type(ex_li[o]) == int:
+                                ex_li[o] = int(ex_li[o].strip())
+                            else:
+                                ex_li[o] = ex_li[o].strip()
+                            
+                        
+                        placeholders = ", ".join(["%s"] * li_num)  # Create placeholders for all columns
+                        query = f"INSERT INTO `{selectedData2}` VALUES ({placeholders})"
+                        values = tuple(ex_li)  # Convert list to tuple for SQL execution
+
+                       
+                        cursor.execute(query, values)
+                        datab.commit()  # Commit the transaction
+
+                        draw_text("Done", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
+                        pygame.display.flip()
+                        pygame.time.delay(2000)
+                        main_menu_loop()
+                        
+                    except sql.Error as e:
+                        print(f"SQL Error: {e}")
+                        DataEntry()
+
             if event.type == pygame.QUIT:
                 terminate()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     terminate()
-                if active:
+
+                if active:  
                     if event.key == pygame.K_BACKSPACE:
                         p =  ex_li[n]
                         ex_li[n] = p[:-1]
@@ -434,13 +524,35 @@ def DataEntry():
 
 
         pygame.display.flip()
-        clock.tick(FPS)    
+        clock.tick(FPS)
 
-   
+
+
+
 
 def C_Data():
+    re = 3
+    inp = 1
+    click3 = False
+    click2 = False
+    click = False
+    
+    input_text = "  "
+    dash_text = "  "
+    where_text = "  "
+    input_var = " "
+    where_var = " "
+    dash_var = " "
+   
+    cursor.execute(f"DESCRIBE `{selectedData2}`")
+    data = cursor.fetchall()
+    
+    li = [row[0] for row in data] 
+    li_num = len(li)  
+
+
     while True:
-        click = False
+        
 
         screen.fill((60, 150, 60))
         if w1 == True:
@@ -451,14 +563,88 @@ def C_Data():
 
         mx,my = pygame.mouse.get_pos()
 
-        draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-250)
-        a = draw_text("")
+
+        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 250)
+        draw_text("Set Conditions", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 100, FONTHEADER)
+
+        for i in range(li_num):
+            draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3+i*(20))
+
+        e = draw_input_text(f"{input_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/4, SCREEN_HEIGHT/3)
+        f = draw_input_text(f"{dash_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/4, SCREEN_HEIGHT/3+30)
+
+        d = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+30)
+
+        p = draw_text("Enter", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 200)
 
         for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                click = True
+
             if event.type == pygame.KEYDOWN:
-                pass
+                if event.key == pygame.K_ESCAPE:
+                    terminate()
+                if click:
+                    if event.key == pygame.K_BACKSPACE:
+                        input_text = input_text[:-1]
+                    elif event.unicode:  
+                        input_text += event.unicode
+                    inp = int(input_text.strip())
+
+                if click2:
+                    if event.key == pygame.K_BACKSPACE:
+                        dash_text = dash_text[:-1]
+                    elif event.unicode:  
+                        dash_text += event.unicode
+               
+                if click3:
+                    if event.key == pygame.K_BACKSPACE:
+                        where_text = where_text[:-1]
+                    elif event.unicode:  
+                        where_text += event.unicode
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if m.collidepoint((mx,my)):
+                    main_menu_loop()
+                if e.collidepoint((mx,my)):
+                    click = True
+                    click2 = False
+                    click3 = False
+                if f.collidepoint((mx,my)):
+                    click2 = True
+                    click = False
+                    click3 = False
+                if d.collidepoint((mx,my)):
+                    click3 = True
+                    click2 = False
+                    click = False
+                if p.collidepoint((mx,my)):
+                    try:
+                        input_var = li[inp-1]
+                        dash_var = dash_text.strip()
+                        where_var = where_text.strip() 
+                        if len(where_var) <= re:
+                            cursor.execute(f"UPDATE `{selectedData2}` SET `{input_var}` = `{dash_var}` ")
+                            datab.commit()  # Commit the transaction
+
+                            draw_text("Done", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
+                            pygame.display.flip()
+                            pygame.time.delay(2000)
+                            main_menu_loop()
+                        else:
+                            cursor.execute(f"UPDATE `{selectedData2}` SET `{input_var}` = `{dash_var}` WHERE  `{where_var}`")
+                            datab.commit()  # Commit the transaction
+
+                            draw_text("Done", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
+                            pygame.display.flip()
+                            pygame.time.delay(2000)
+                            main_menu_loop()
+                    except sql.Error:
+                            print(sql.Error)
+                            draw_text("Error", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
+                            pygame.display.flip()
+                            pygame.time.delay(5000)
+                            main_menu_loop()
+
+
             if event.type == pygame.QUIT:
                 terminate()
 
@@ -591,7 +777,7 @@ def FindData_select_opiom():
 
         draw_text("Show Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
         a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+150)
-        b = draw_text("2. Show Specific Column", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+120)
+        b = draw_text("2. Show Specific ", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+120)
         q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
 
         for event in pygame.event.get():
@@ -617,7 +803,7 @@ def FindData_select_opiom():
    
 
 def ShowTable():
-    cursor.execute(f"SELECT * FROM `{selectedData3}`")
+    headers = get_table_headers(f"{selectedData3}")
   
     
 
@@ -629,11 +815,16 @@ def ShowTable():
         if w2 == True:
             screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
 
+        data = fetch_table_data(f"{selectedData3}")  
+        render_table(data, headers)  
+        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-20)
+
         mx,my = pygame.mouse.get_pos()
      
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                pass
+                if m.collidepoint((mx,my)):
+                    main_menu_loop()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     terminate()
