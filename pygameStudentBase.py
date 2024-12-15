@@ -50,17 +50,7 @@ def draw_input_text(text, color, surface, x, y,font = FONT  ):
     return textRect
 
 def validate_headers(headers, data):
-    """
-    Ensure the number of headers matches the number of columns in the data.
-    If headers are missing, add placeholders like 'Field of inquiry (1)', etc.
 
-    Args:
-        headers (list): List of column headers.
-        data (list of tuples): Data fetched from the database.
-
-    Returns:
-        list: Validated list of headers.
-    """
     if not data:
         return headers  # If no data, headers are fine as-is.
 
@@ -95,7 +85,7 @@ def calculate_column_widths(data, headers):
 
 def render_table(data, headers):
    
-    screen.fill((60, 150, 60))  
+    screen.fill("darkblue")  
 
     # Calculate column widths
     col_widths = calculate_column_widths(data, headers)
@@ -185,7 +175,7 @@ def connector_loop():
 def main_menu_loop():
     while True:
         
-        screen.fill((10,10,10))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -220,7 +210,7 @@ def main_menu_loop():
 
 def dataManager():
     while True:
-        screen.fill((60,150,60))
+        screen.fill("darkblue")
 
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
@@ -324,7 +314,7 @@ def ChangeData_select_database():
 
     while True:
         
-        screen.fill((60,150,60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -378,7 +368,7 @@ def ChangeData_select_table():
     selectedData2 = None
 
     while True:
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -421,13 +411,13 @@ def ChangeData_Options():
         mx, my = pygame.mouse.get_pos()
         click = False
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
             screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
 
-        e = draw_text("<HEADER>", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
+        e = draw_text("Data Modification", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
         d = draw_text("1. Data Entry", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50)
         s = draw_text("2. Change Data", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
         a = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
@@ -467,7 +457,7 @@ def DataEntry():
     while True:
         click = False
 
-        screen.fill((60, 150, 60))  
+        screen.fill("darkblue")  
 
      
         if w1:
@@ -577,7 +567,7 @@ def C_Data():
     while True:
         
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -691,7 +681,7 @@ def FindData():
     while True:
         click = False
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -743,7 +733,7 @@ def FindData_select_databasetable():
 
         click = False
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -790,7 +780,7 @@ def FindData_select_opiom():
         click = False
 
         
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -799,8 +789,8 @@ def FindData_select_opiom():
         mx,my = pygame.mouse.get_pos()
 
         draw_text("Show Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
-        a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+150)
-        b = draw_text("2. Show Specific ", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+120)
+        a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+50 )
+        b = draw_text("2. Show Specific ", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+100)
         q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
 
         for event in pygame.event.get():
@@ -832,7 +822,7 @@ def ShowTable():
 
     while True:
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -887,7 +877,7 @@ def ShowTableSpecific():
 
     while True:
 
-        screen.fill((60, 150, 60))
+        screen.fill("darkblue")
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
         if w2 == True:
@@ -914,17 +904,17 @@ def ShowTableSpecific():
                     headers = [row[0] for row in data]
                     cursor.execute(f"SELECT * FROM {selectedData3} ")
                     
-                if input_text == input_text_const and where_text == where_text_const and order_text != order_text_const: 
+                elif input_text == input_text_const and where_text == where_text_const and order_text != order_text_const: 
                     cursor.execute(f"SELECT * FROM {selectedData3} ORDER BY {order_text.strip()}")
-                if input_text == input_text_const and order_text == order_text_const and where_text != where_text_const:
+                elif input_text == input_text_const and order_text == order_text_const and where_text != where_text_const:
                     cursor.execute(f"SELECT * FROM {selectedData3} WHERE {where_text.strip()}") 
 
-                if input_text != input_text_const and  order_text == order_text_const and where_text == where_text_const:      
+                elif input_text != input_text_const and  order_text == order_text_const and where_text == where_text_const:      
                     cursor.execute(f"SELECT {input_text} FROM {selectedData3} ")
 
-                if input_text != input_text_const and  order_text != order_text_const and where_text == where_text_const:      
+                elif input_text != input_text_const and  order_text != order_text_const and where_text == where_text_const:      
                     cursor.execute(f"SELECT {input_text} FROM `{selectedData3}` ORDER BY {order_text.strip()}")
-                if input_text != input_text_const and  where_text != where_text_const and order_text == order_text_const:      
+                elif input_text != input_text_const and  where_text != where_text_const and order_text == order_text_const:      
                     cursor.execute(f"SELECT {input_text} FROM `{selectedData3}` WHERE {where_text.strip()}") 
 
                 data1 = cursor.fetchall()
