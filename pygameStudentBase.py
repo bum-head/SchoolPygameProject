@@ -251,7 +251,7 @@ def dataManager():
 def Options():
     global w1, w2
     while True:
-        screen.fill((0,0,0))
+        screen.fill("darkblue")
 
         if w1 == True:
             screen.blit((pygame.transform.scale(w1img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
