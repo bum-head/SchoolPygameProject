@@ -223,7 +223,7 @@ def dataManager():
         b = draw_text("1. Data Modification","white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+60)
         c = draw_text("2. Search Data","white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+90)
 
-        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+180)
+        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
 
         mx, my = pygame.mouse.get_pos()
 
@@ -263,7 +263,7 @@ def Options():
         a = draw_text("Wallpaper 1", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+40)
         b = draw_text("Wallpaper 2", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+80)
         c = draw_text("Wallpaper Base", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+120)
-        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+300)
+        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
 
         mx, my = pygame.mouse.get_pos()
 
@@ -322,7 +322,7 @@ def ChangeData_select_database():
 
         a= draw_text("Select Database", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
       
-        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
+        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
         mousecli = False
         click = False
  
@@ -378,7 +378,7 @@ def ChangeData_select_table():
         Mousecli = False
 
         a = draw_text("Select Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
-        b = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+200)
+        b = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
          
         mx, my = pygame.mouse.get_pos()
 
@@ -420,7 +420,7 @@ def ChangeData_Options():
         e = draw_text("Data Modification", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
         d = draw_text("1. Data Entry", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50)
         s = draw_text("2. Change Data", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
-        a = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
+        a = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -467,7 +467,7 @@ def DataEntry():
 
         mx, my = pygame.mouse.get_pos()  
 
-        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 250)
+        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT-30)
         a = draw_text("Enter Values", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 100, FONTHEADER)
         g = draw_text("Enter", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+200)
 
@@ -577,19 +577,20 @@ def C_Data():
         mx,my = pygame.mouse.get_pos()
 
 
-        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 250)
+        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT-30)
         draw_text("Set Conditions", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 100, FONTHEADER)
 
         for i in range(li_num):
             draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, 20+SCREEN_HEIGHT/3+i*(30))
 
         e = draw_input_text(f"{input_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
-        draw_text(f"Column to be updated", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+30)
+        draw_text("Column to be updated", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+30)
 
         f = draw_input_text(f"{dash_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+90)
-        draw_text(f"Updated Column", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
+        draw_text("Updated Column", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
 
         d = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+30)
+        draw_text("Where Clause", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+60)
 
         p = draw_text("Enter", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 200)
 
@@ -694,7 +695,7 @@ def FindData():
 
         a = draw_text("Select Database", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
 
-        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
+        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2,SCREEN_HEIGHT-30)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -747,7 +748,7 @@ def FindData_select_databasetable():
 
         a = draw_text("Select table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
 
-        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
+        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -794,7 +795,7 @@ def FindData_select_opiom():
         draw_text("Show Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
         a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+50 )
         b = draw_text("2. Show Specific ", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+100)
-        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+250)
+        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -833,7 +834,7 @@ def ShowTable():
 
         data = fetch_table_data(f"{selectedData3}")  
         render_table(data, headers)  
-        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-20)
+        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
 
         mx,my = pygame.mouse.get_pos()
      
@@ -886,7 +887,7 @@ def ShowTableSpecific():
         if w2 == True:
             screen.blit((pygame.transform.scale(w2img, (SCREEN_WIDTH, SCREEN_HEIGHT))), (0,0))
 
-        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-20)
+        m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
 
         mx,my = pygame.mouse.get_pos()
      
