@@ -405,6 +405,12 @@ def ChangeData_select_table():
         clock.tick(FPS)
 
 def ChangeData_Options():
+
+    """
+    A menu system to select between the options of Data Entry and Changing of Data
+
+    """
+
     while True:
 
 
@@ -421,6 +427,8 @@ def ChangeData_Options():
         d = draw_text("1. Data Entry", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-50)
         s = draw_text("2. Change Data", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3)
         a = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
+        t = draw_text("<-- Back","white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-90)
+    
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -432,6 +440,8 @@ def ChangeData_Options():
                 click = True
 
         if click:
+            if t.collidepoint((mx,my)):
+                ChangeData_select_database()
             if d.collidepoint((mx,my)):
                 DataEntry()
             if s.collidepoint((mx,my)):
@@ -443,6 +453,12 @@ def ChangeData_Options():
         clock.tick(FPS)
 
 def DataEntry():
+
+    """
+    Main loop for INSERT command in MySQL
+
+    for entering new data in the table
+    """
     
     active = False
 
@@ -470,6 +486,7 @@ def DataEntry():
         m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT-30)
         a = draw_text("Enter Values", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 100, FONTHEADER)
         g = draw_text("Enter", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+200)
+        t = draw_text("<-- Back", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-90)
 
         # Dynamically calculate the width of each input box and the gap between them
         box_width = SCREEN_WIDTH // (li_num + 1.5) - 40  
@@ -490,6 +507,8 @@ def DataEntry():
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = True
+                if t.collidepoint((mx,my)):
+                    ChangeData_Options()
                 if m.collidepoint((mx, my)):
                     main_menu_loop()
                     
@@ -515,10 +534,12 @@ def DataEntry():
                         draw_text("Done", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
                         pygame.display.flip()
                         pygame.time.delay(2000)
-                        main_menu_loop()
+                        ChangeData_Options()
                         
                     except sql.Error as e:
-                        print(f"SQL Error: {e}")
+                        draw_text(f"SQL Error: {e}", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
+                        pygame.display.flip()
+                        pygame.time.delay(2000)
                         DataEntry()
 
             if event.type == pygame.QUIT:
@@ -544,6 +565,14 @@ def DataEntry():
 
 
 def C_Data():
+
+    """
+    Main loop for UPDATE command in MySQL
+
+    primarily used for changing of already existing values
+    """
+
+
     re = 3
     inp = 1
     click3 = False
@@ -578,6 +607,7 @@ def C_Data():
 
 
         m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT-30)
+        t = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT-90)
         draw_text("Set Conditions", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 100, FONTHEADER)
 
         for i in range(li_num):
@@ -619,6 +649,8 @@ def C_Data():
                         where_text += event.unicode
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if t.collidepoint((mx,my)):
+                    ChangeData_Options()
                 if m.collidepoint((mx,my)):
                     main_menu_loop()
                 if e.collidepoint((mx,my)):
@@ -653,7 +685,7 @@ def C_Data():
                             draw_text("Done", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
                             pygame.display.flip()
                             pygame.time.delay(2000)
-                            main_menu_loop()
+                            ChangeData_Options()
                     except sql.Error:
                             print(sql.Error)
                             draw_text("Error", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
@@ -676,6 +708,9 @@ def C_Data():
 
 
 def FindData():
+
+
+
     global selectedData3
     cursor.execute("SHOW DATABASES")
     data = cursor.fetchall()
@@ -780,6 +815,10 @@ def FindData_select_databasetable():
 
 def FindData_select_opiom():
     
+    """
+    A menu system to select between two variants of the SELECT command in MySQL.
+    """
+
     while True:
         click = False
 
@@ -796,6 +835,8 @@ def FindData_select_opiom():
         a = draw_text("1. Show Full Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+50 )
         b = draw_text("2. Show Specific ", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3+100)
         q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
+        t = draw_text("<-- Back", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-90)
+    
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -808,6 +849,8 @@ def FindData_select_opiom():
 
         
         if click:
+            if t.collidepoint((mx,my)):
+                FindData()
             if a.collidepoint((mx,my)):
                 ShowTable()
             if b.collidepoint((mx,my)):
@@ -820,6 +863,14 @@ def FindData_select_opiom():
    
 
 def ShowTable():
+
+    """
+    First loop for SELECT command in MySQL
+
+
+    to view the *full table and the values itself
+    """
+
     headers = get_table_headers(f"{selectedData3}")
   
     
@@ -835,11 +886,15 @@ def ShowTable():
         data = fetch_table_data(f"{selectedData3}")  
         render_table(data, headers)  
         m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
+        t = draw_text("<-- Back", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-90)
+    
 
         mx,my = pygame.mouse.get_pos()
      
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if t.collidepoint((mx,my)):
+                    FindData_select_opiom()
                 if m.collidepoint((mx,my)):
                     main_menu_loop()
             if event.type == pygame.KEYDOWN:
@@ -856,6 +911,14 @@ def ShowTable():
 
 
 def ShowTableSpecific():
+
+    """
+    Second loop for SELECT command in MySQL
+
+
+    to view specific values in a table.
+    """
+   
 
     entr = False
 
@@ -900,8 +963,10 @@ def ShowTableSpecific():
         c = draw_input_text(f"{order_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
         draw_text(" Order by ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+160)
 
-        e = draw_text("ENTER", "white", screen, SCREEN_WIDTH/2 , SCREEN_HEIGHT-60)
+        e = draw_text("ENTER", "white", screen, SCREEN_WIDTH/2 , SCREEN_HEIGHT-90)
 
+        t = draw_text("<-- Back", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-60)
+    
 
         for i in range(li_num):
             draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3+i*(20))
@@ -965,6 +1030,8 @@ def ShowTableSpecific():
                         order_text += event.unicode
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+                if t.collidepoint((mx,my)):
+                    FindData_select_opiom()
                 if m.collidepoint((mx,my)):
                     main_menu_loop()
                 if a.collidepoint((mx,my)):
