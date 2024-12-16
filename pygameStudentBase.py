@@ -581,10 +581,13 @@ def C_Data():
         draw_text("Set Conditions", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 100, FONTHEADER)
 
         for i in range(li_num):
-            draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3+i*(20))
+            draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, 20+SCREEN_HEIGHT/3+i*(30))
 
-        e = draw_input_text(f"{input_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/4, SCREEN_HEIGHT/3)
-        f = draw_input_text(f"{dash_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/4, SCREEN_HEIGHT/3+30)
+        e = draw_input_text(f"{input_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
+        draw_text(f"Column to be updated", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+30)
+
+        f = draw_input_text(f"{dash_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+90)
+        draw_text(f"Updated Column", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
 
         d = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+30)
 
@@ -887,9 +890,14 @@ def ShowTableSpecific():
 
         mx,my = pygame.mouse.get_pos()
      
-        a = draw_input_text(f"{input_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/4, SCREEN_HEIGHT/3)
-        b = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
-        c = draw_input_text(f"{order_text}", "white", screen, SCREEN_WIDTH/2+3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3+40)
+        a = draw_input_text(f"{input_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
+        draw_text("Column", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+30)
+
+        b = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
+        draw_text("Where clause", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+40)
+
+        c = draw_input_text(f"{order_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
+        draw_text("Order by clause", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+160)
 
         e = draw_text("ENTER", "white", screen, SCREEN_WIDTH/2 , SCREEN_HEIGHT-60)
 
@@ -920,7 +928,14 @@ def ShowTableSpecific():
                 data1 = cursor.fetchall()
                 headers = validate_headers([headers[i].strip() for i in range(len(headers))], data1)
                 render_table(data1, headers)
-                
+
+                o = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-20)
+
+                for event in pygame.event.get():
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if o.collidepoint((mx,my)):
+                            main_menu_loop()
+
             except sql.Error:
                 print(sql.Error)
                 terminate()
