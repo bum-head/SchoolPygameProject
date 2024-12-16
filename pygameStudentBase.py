@@ -590,7 +590,7 @@ def C_Data():
         draw_text("Updated Column", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
 
         d = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+30)
-        draw_text("Where Clause", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+60)
+        draw_text(" Where ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+60)
 
         p = draw_text("Enter", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 200)
 
@@ -895,10 +895,10 @@ def ShowTableSpecific():
         draw_text("Column", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+30)
 
         b = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
-        draw_text("Where clause", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+40)
+        draw_text(" Where ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+40)
 
         c = draw_input_text(f"{order_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
-        draw_text("Order by clause", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+160)
+        draw_text(" Order by ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+160)
 
         e = draw_text("ENTER", "white", screen, SCREEN_WIDTH/2 , SCREEN_HEIGHT-60)
 
