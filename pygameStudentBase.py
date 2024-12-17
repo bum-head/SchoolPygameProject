@@ -607,14 +607,14 @@ def C_Data():
 
 
         m = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT-30)
-        t = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT-90)
+        t = draw_text("<-- Back", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT-90)
         draw_text("Set Conditions", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 100, FONTHEADER)
 
         for i in range(li_num):
             draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, 20+SCREEN_HEIGHT/3+i*(30))
 
         e = draw_input_text(f"{input_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
-        draw_text("Column to be updated", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+30)
+        draw_text("Column to be updated(In Numbers)", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+30)
 
         f = draw_input_text(f"{dash_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+90)
         draw_text("Updated Column", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
@@ -671,7 +671,7 @@ def C_Data():
                         dash_var = dash_text.strip()
                         where_var = where_text.strip() 
                         if len(where_var) <= re:
-                            cursor.execute(f"UPDATE `{selectedData2}` SET `{input_var}` = `{dash_var}` ")
+                            cursor.execute(f"UPDATE `{selectedData2}` SET {input_var} = {dash_var} ")
                             datab.commit()  # Commit the transaction
 
                             draw_text("Done", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
@@ -679,7 +679,7 @@ def C_Data():
                             pygame.time.delay(2000)
                             main_menu_loop()
                         else:
-                            cursor.execute(f"UPDATE `{selectedData2}` SET `{input_var}` = `{dash_var}` WHERE  `{where_var}`")
+                            cursor.execute(f"UPDATE `{selectedData2}` SET {input_var} = {dash_var} WHERE  {where_var}")
                             datab.commit()  # Commit the transaction
 
                             draw_text("Done", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
@@ -959,6 +959,7 @@ def ShowTableSpecific():
 
         b = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
         draw_text(" Where ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+40)
+        draw_text(" Column = 'STRING' ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+60)
 
         c = draw_input_text(f"{order_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
         draw_text(" Order by ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+160)
