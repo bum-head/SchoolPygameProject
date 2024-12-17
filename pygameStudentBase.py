@@ -322,7 +322,7 @@ def ChangeData_select_database():
 
         a= draw_text("Select Database", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
       
-        z = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
+        z = draw_text("<- Main Menu", "white", screen, SCREEN_WIDTH-100, SCREEN_HEIGHT/3-100)
         mousecli = False
         click = False
  
@@ -378,7 +378,7 @@ def ChangeData_select_table():
         Mousecli = False
 
         a = draw_text("Select Table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
-        b = draw_text("# Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
+        b = draw_text("<- Main Menu", "white", screen, SCREEN_WIDTH-100, SCREEN_HEIGHT/3-100)
          
         mx, my = pygame.mouse.get_pos()
 
@@ -730,7 +730,7 @@ def FindData():
 
         a = draw_text("Select Database", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
 
-        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2,SCREEN_HEIGHT-30)
+        q = draw_text("<- Main Menu", "white", screen, SCREEN_WIDTH-100, SCREEN_HEIGHT/3-100)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -783,7 +783,7 @@ def FindData_select_databasetable():
 
         a = draw_text("Select table", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/3-100, FONTHEADER)
 
-        q = draw_text("#Main Menu", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-30)
+        q = draw_text("<- Main Menu", "white", screen, SCREEN_WIDTH-100, SCREEN_HEIGHT/3-100)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
