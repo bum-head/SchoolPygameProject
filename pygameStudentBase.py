@@ -1,7 +1,7 @@
 import pygame, sys
 import mysql.connector as sql
-
-
+import logging
+from mysql.connector import Error
 
 pygame.init()
 
@@ -28,6 +28,16 @@ w1 = False
 w2 = False
 
 
+# Create and configure logger
+logging.basicConfig(filename="logfile.log",
+                    format='%(asctime)s %(message)s',
+                    filemode='w')
+
+# Creating an object
+logger = logging.getLogger()
+
+# Setting the threshold of logger to DEBUG
+logger.setLevel(logging.DEBUG)
 
 
 
@@ -160,10 +170,14 @@ def connector_loop():
                             pygame.time.delay(2000)  
                             cursor = datab.cursor()
                             main_menu_loop()
-                        except sql.Error:
-                            draw_text(f"`{sql.Error}`", "red", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 20)
+                        except sql.Error as p:
+                            logging.exception(p)
+                            if p.errno == 1045:
+                                draw_text("Incorrect Password", "red", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 20)
+                            else:
+                                draw_text("Unknown Error Occured", "red", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 - 20)
                             pygame.display.flip()
-                            pygame.time.delay(10000)
+                            pygame.time.delay(5000)
                             terminate()
         pygame.display.flip()
         clock.tick(FPS)
@@ -537,9 +551,9 @@ def DataEntry():
                         ChangeData_Options()
                         
                     except sql.Error as e:
-                        draw_text(f"SQL Error: {e}", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
+                        draw_text(f"SQL Error: {e}", "gold2", screen, SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 3+300)
                         pygame.display.flip()
-                        pygame.time.delay(2000)
+                        pygame.time.delay(6000)
                         DataEntry()
 
             if event.type == pygame.QUIT:
@@ -619,8 +633,10 @@ def C_Data():
         f = draw_input_text(f"{dash_text}", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+90)
         draw_text("Updated Column", "white", screen, SCREEN_WIDTH/2-SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
 
-        d = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+30)
-        draw_text(" Where ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+60)
+        d = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3)
+        draw_text(" Where ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+30)
+        draw_text(" *String/Date should be quoted ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/4, SCREEN_HEIGHT/3+60)
+
 
         p = draw_text("Enter", "white", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3 + 200)
 
@@ -634,7 +650,14 @@ def C_Data():
                         input_text = input_text[:-1]
                     elif event.unicode:  
                         input_text += event.unicode
-                    inp = int(input_text.strip())
+                    try:
+                        inp = int(input_text.strip())
+                    except ValueError as l:
+                        logging.exception(l)
+                        draw_text("Invalid Input [COLUMN NAME]", "gold2", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT/2+60)
+                        pygame.display.flip()
+                        pygame.time.delay(3000)
+                        main_menu_loop()
 
                 if click2:
                     if event.key == pygame.K_BACKSPACE:
@@ -667,7 +690,18 @@ def C_Data():
                     click = False
                 if p.collidepoint((mx,my)):
                     try:
-                        input_var = li[inp-1]
+                        try:
+                            inp = int(input_text.strip())
+                            if 1 <= inp <= len(li):
+                                input_var = li[inp-1]
+                            else:
+                                raise ValueError("Invalid column number")
+                            
+                        except ValueError:
+                            draw_text("Invalid column number!", "gold2", screen, SCREEN_WIDTH / 2, SCREEN_HEIGHT/2+60)
+                            pygame.display.flip()
+                            pygame.time.delay(3000)
+                            main_menu_loop()
                         dash_var = dash_text.strip()
                         where_var = where_text.strip() 
                         if len(where_var) <= re:
@@ -686,13 +720,21 @@ def C_Data():
                             pygame.display.flip()
                             pygame.time.delay(2000)
                             ChangeData_Options()
-                    except sql.Error:
-                            print(sql.Error)
-                            draw_text("Error", "white", screen, SCREEN_WIDTH / 2 + 300, SCREEN_HEIGHT / 3+300)
-                            pygame.display.flip()
-                            pygame.time.delay(5000)
-                            main_menu_loop()
 
+           
+                    except sql.errors.ProgrammingError as w:
+                            
+                        draw_text("Input Error", "gold2", screen, SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2+300, FONTHEADER)
+                        logging.exception(w)
+                        pygame.display.flip()
+                        pygame.time.delay(5000)
+                        main_menu_loop()
+                    except Exception as w:
+                        draw_text("Check Logfile", "gold2", screen, SCREEN_WIDTH / 2 , SCREEN_HEIGHT / 2+300, FONTHEADER)
+                        logging.exception(w)
+                        pygame.display.flip()
+                        pygame.time.delay(5000) 
+                        terminate()
 
             if event.type == pygame.QUIT:
                 terminate()
@@ -741,6 +783,8 @@ def FindData():
                     terminate()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = True
+
+        
 
         for j in range(len(li)):
             input_text = f"{j+1}" + " " + li[j][0]
@@ -959,7 +1003,7 @@ def ShowTableSpecific():
 
         b = draw_input_text(f"{where_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3)
         draw_text(" Where ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+40)
-        draw_text(" Column = 'STRING' ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+60)
+        draw_text(" *string/date should be quoted ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+60)
 
         c = draw_input_text(f"{order_text}", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+120)
         draw_text(" Order by ", "white", screen, SCREEN_WIDTH/2+SCREEN_WIDTH/8, SCREEN_HEIGHT/3+160)
@@ -968,9 +1012,10 @@ def ShowTableSpecific():
 
         t = draw_text("<-- Back", "white", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT-60)
     
+        draw_text("[COLUMN NAME]", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3-30)
 
         for i in range(li_num):
-            draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3+i*(20))
+            draw_text(f"{li[i]}", "white", screen, SCREEN_WIDTH/2-3*SCREEN_WIDTH/8, SCREEN_HEIGHT/3+i*(30))
 
         if entr:
             try:
@@ -1003,9 +1048,19 @@ def ShowTableSpecific():
                         if o.collidepoint((mx,my)):
                             main_menu_loop()
 
-            except sql.Error:
-                print(sql.Error)
-                terminate()
+            except sql.Error as l:
+                draw_text(f"{l}", "gold2", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/2-200, FONTHEADER)
+                #draw_text("Input Error", "gold2", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/2, FONTHEADER)
+                pygame.display.flip()
+                pygame.time.delay(4000)
+                main_menu_loop()
+
+            except Exception as k:
+                draw_text("Unknown Error occured", "gold2", screen, SCREEN_WIDTH/2, SCREEN_HEIGHT/2-200, FONTHEADER)
+                logging.exception(k)
+                pygame.display.flip()
+                pygame.time.delay(3000)
+                main_menu_loop()
 
 
         for event in pygame.event.get():
