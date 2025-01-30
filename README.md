@@ -1,2 +1,2 @@
-#School Project On MySQL Database Handler built in python
+##School Project On MySQL Database Handler built in python
 
